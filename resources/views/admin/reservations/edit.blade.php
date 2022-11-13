@@ -21,9 +21,10 @@
             @endif
 
             <div class="w-full max-w-xxl">
-                <form method="POST" action="{{ route('admin.reservation.store') }}"
+                <form method="POST" action="{{ route('admin.reservation.update', $reservation->id) }}"
                     class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     @csrf
+                    @method('PUT')
 
                     @if ($errors->any())
                         <div class='text-red-600 text-sm p-2' role="alert">
@@ -42,7 +43,7 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('last_name') ? 'is-invalid' : '' }}"
-                            id="last_name" type="text" value="{{ old('last_name') }}" name="last_name"
+                            id="last_name" type="text" value="{{ $reservation->last_name }}" name="last_name"
                             placeholder="last_name">
                         @error('last_name')
                             <div class="text-red-500  text-sm text-center">
@@ -56,7 +57,7 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('first_name') ? 'is-invalid' : '' }}"
-                            id="first_name" type="text" value="{{ old('first_name') }}" name="first_name"
+                            id="first_name" type="text" value="{{ $reservation->first_name }}" name="first_name"
                             placeholder="first_name">
 
                         @error('first_name')
@@ -71,7 +72,7 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('tel_number') ? 'is-invalid' : '' }}"
-                            id="tel_number" type="number" name="tel_number" value="{{ old('tel_number') }}"
+                            id="tel_number" type="number" name="tel_number" value="{{ $reservation->tel_number }}"
                             placeholder="tel_number">
 
                         @error('tel_number')
@@ -87,7 +88,7 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="email" type="email" name="email" placeholder="email" value="{{ old('email') }}">
+                            id="email" type="email" name="email" value="{{ $reservation->email }}"  placeholder="email">
                     </div>
 
                     <div class="mb-4">
@@ -96,7 +97,7 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  {{ $errors->has('res_date') ? 'is-invalid' : '' }}"
-                            id="res_date" type="datetime-local" value="{{ old('res_date') }}" name="res_date" placeholder="02/12/22">
+                            id="res_date" type="datetime-local" value="{{ $reservation->res_date }}" name="res_date" placeholder="">
 
                         @error('res_date')
                             <div class="text-red-500  text-sm text-center">
@@ -112,7 +113,7 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="guest_number" type="number" name="guest_number" placeholder="002">
+                            id="guest_number" type="number" name="guest_number" value="{{ $reservation->guest_number }}"  placeholder="002">
                     </div>
 
                     <div class="mb-1">
@@ -124,7 +125,7 @@
                             id="status" name="table_id">
 
                             @foreach ($tables as $table)
-                                <option value="{{ $table->id }}">{{ $table->name }}</option>
+                                <option value="{{ $table->id }}" >{{ $table->name }}</option>
                             @endforeach
 
                         </select>

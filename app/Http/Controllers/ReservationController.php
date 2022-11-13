@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Table;
+use App\Rules\DateBetween;
+use App\Rules\TimeBetween;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 
@@ -15,10 +18,18 @@ class ReservationController extends Controller
     public function index()
     {
         //
-        $reservations = Reservation::all();
+        // $reservations = Reservation::all();
+        // $reservations = Reservation::with([
+        //   'table',
+        // ])->get();
+
+        $reservations = Reservation::with('table')
+        ->orderBy('created_at' ,'desc')
+        ->get();
+
         // dd($reservations->toArray());
 
-        return view('admin.reservations.index' , [
+        return view('admin.reservations.index', [
             'reservations' => $reservations,
         ]);
     }
@@ -32,7 +43,11 @@ class ReservationController extends Controller
     {
         //
 
-        return view('admin.reservations.create');
+        $tables = Table::all();
+
+        return view('admin.reservations.create', [
+            'tables' => $tables,
+        ]);
     }
 
     /**
@@ -44,6 +59,34 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         //
+
+        $request->validate([
+            // 'first_name' => 'required',
+            'last_name' => 'required',
+            'tel_number' => 'required',
+            'res_date' => ['required' , 'date', new DateBetween, new TimeBetween],
+            'guest_number' => 'required',
+        ]);
+
+        // $image = $request->file('image')->store('public/categories');
+
+        // dd($request->toArray());
+
+           Reservation::create([
+            'first_name'  => $request->first_name,
+            'last_name'  => $request->last_name,
+            'email'  => $request->email,
+            'tel_number'  => $request->tel_number,
+            'res_date'  => $request->res_date,
+            'table_id'  => $request->table_id,
+            'guest_number'  => $request->guest_number,
+
+        ]);
+
+
+        return redirect()->route('admin.reservation.index')->with('success', 'reservation enregistrer avec success.');
+
+        // return back()->with('success' , 'Votre devis a été envoyé avec succès');
     }
 
     /**
@@ -63,9 +106,15 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Reservation $reservation)
     {
         //
+
+        $tables = Table::all();
+        return view('admin.reservations.edit', [
+            'tables' => $tables,
+            'reservation' => $reservation,
+        ]);
     }
 
     /**
@@ -75,9 +124,33 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Reservation $reservation)
     {
         //
+        $request->validate([
+            'last_name' => 'required',
+            'tel_number' => 'required',
+            'res_date' => 'required',
+            'guest_number' => 'required',
+        ]);
+
+        // $image = $request->file('image')->store('public/categories');
+
+        // dd($request->toArray());
+
+        $reservation->update([
+            'first_name'  => $request->first_name,
+            'last_name'  => $request->last_name,
+            'email'  => $request->email,
+            'tel_number'  => $request->tel_number,
+            'res_date'  => $request->res_date,
+            'table_id'  => $request->table_id,
+            'guest_number'  => $request->guest_number,
+
+        ]);
+
+
+        return redirect()->route('admin.reservation.index')->with('success', 'reservation enregistrer avec success.');
     }
 
     /**
@@ -86,8 +159,10 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Reservation $reservation)
     {
         //
+        $reservation->delete();
+        return to_route('admin.reservation.index');
     }
 }

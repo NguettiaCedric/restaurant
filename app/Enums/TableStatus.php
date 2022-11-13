@@ -2,8 +2,6 @@
 
 namespace Enums;
 
-use App\Enums;
-
 enum TableStatus: string
 {
     case  Pendant = 'Pendant';

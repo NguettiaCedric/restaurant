@@ -56,7 +56,8 @@
             </div> --}}
 
             <div class="w-full max-w-xxl">
-                <form method="POST" action="{{ route('admin.menus.store')}}" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <form method="POST" action="{{ route('admin.menus.store') }}" enctype="multipart/form-data"
+                    class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     @csrf
 
                     <div class="mb-4">
@@ -64,8 +65,14 @@
                             Nom <span class="text-red-500">*</span>
                         </label>
                         <input
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="name"  name="name" type="text" placeholder="nom">
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                            id="name" name="name" type="text" placeholder="nom" value="{{ old('nom') }}">
+
+                        @error('name')
+                            <div class="text-red-500  text-sm text-center">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="mb-4">
@@ -73,8 +80,15 @@
                             Prix <span class="text-red-500">*</span>
                         </label>
                         <input
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="price" min="0.00" max="10000.0" step="0.01"  name="price" type="number" placeholder="2 000 fcfa">
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('price') ? 'is-invalid' : '' }}"
+                            id="price" min="0.00" max="10000.0" step="0.01" name="price" type="number"
+                            placeholder="2 000 fcfa" value="{{ old('price') }}">
+
+                        @error('price')
+                            <div class="text-red-500  text-sm text-center">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="mb-6">
@@ -83,7 +97,7 @@
                         </label>
                         <input
                             class="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                            id="image"  name="image" type="file">
+                            id="image" name="image" type="file">
                     </div>
 
 
@@ -91,30 +105,44 @@
                         <label class="block text-gray-700 text-lg font-bold mb-2" for="description">
                             Description <span class="text-red-500">*</span>
                         </label>
-                            <textarea  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"  name="description" id="description" cols="" rows="4" placeholder="Votre description ici..."></textarea>
+                        <textarea
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline {{ $errors->has('description') ? 'is-invalid' : '' }}"
+                            name="description" id="description" cols="" rows="4" placeholder="Votre description ici..."
+                            value="{{ old('description') }}">
+                        </textarea>
+                        @error('description')
+                            <div class="text-red-500  text-sm text-center">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
                     </div>
 
                     <div class="mb-1">
                         <label class="block text-gray-700 text-lg font-bold mb-2" for="categories">
                             Catégories <span class="text-red-500">*</span>
                         </label>
-                            <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline form-multiselect"  id="categories" multiple name="categories[]" >
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{$category->name}}</option>
-                                @endforeach
-                            </select>
+                        <select
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline form-multiselect {{ $errors->has('categories') ? 'is-invalid' : '' }}"
+                            id="categories" multiple name="categories[]">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('categories')
+                            <div class="text-red-500  text-sm text-center">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                        @enderror
                     </div>
-
 
                     <div class="flex justify-center py-0">
-                        <button type="submit" class="px-4 py-2 text-white bg-gray-500 hover:bg-indigo-700 rounded-lg ">Enregistrer</button>
+                        <button type="submit"
+                            class="px-4 py-2 text-white bg-gray-500 hover:bg-indigo-700 rounded-lg ">Enregistrer</button>
                     </div>
-
-
                 </form>
 
                 <p class="text-center text-gray-500 text-xs">
-                    &copy;2020 Acme Corp. All rights reserved.
+                    &copy;2022 DricoDesign. Tous droit reservé.
                 </p>
             </div>
         </div>

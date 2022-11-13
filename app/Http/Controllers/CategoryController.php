@@ -46,6 +46,7 @@ class CategoryController extends Controller
         //
         $request->validate([
             'name' => 'required',
+            'description' => 'required',
         ]);
 
         // $image = $request->file('image')->store('public/categories');
