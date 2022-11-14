@@ -14,10 +14,14 @@
             </div>
 
 
-            @if (session()->has('success'))
+            {{-- @if (session()->has('success'))
                 <div class="text-red-600">
                     <h5 class="text-center">{{ session()->get('success') }}</h5>
                 </div>
+            @endif --}}
+
+            @if (session()->has('success'))
+                <div class="alert alert-success-500 text-center">{{ session('success') }}</div>
             @endif
 
             <div class="w-full max-w-xxl">
@@ -87,7 +91,8 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="email" type="email" name="email" placeholder="email" value="{{ old('email') }}">
+                            id="email" type="email" name="email" placeholder="email"
+                            value="{{ old('email') }}">
                     </div>
 
                     <div class="mb-4">
@@ -96,7 +101,8 @@
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  {{ $errors->has('res_date') ? 'is-invalid' : '' }}"
-                            id="res_date" type="datetime-local" value="{{ old('res_date') }}" name="res_date" placeholder="02/12/22">
+                            id="res_date" type="datetime-local" value="{{ old('res_date') }}" name="res_date"
+                            placeholder="02/12/22">
 
                         @error('res_date')
                             <div class="text-red-500  text-sm text-center">
@@ -124,7 +130,7 @@
                             id="status" name="table_id">
 
                             @foreach ($tables as $table)
-                                <option value="{{ $table->id }}">{{ $table->name }}</option>
+                                <option value="{{ $table->id }}">{{ $table->name }} ({{ $table->guest_number }} clients) </option>
                             @endforeach
 
                         </select>

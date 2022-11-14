@@ -44,6 +44,6 @@ class TimeBetween implements Rule
      */
     public function message()
     {
-        return 'Veuillez entrer une heure entre 17:00:00 et 23:00:00';
+        return 'Veuillez entrer une heure entre 11:00:00 et 23:00:00';
     }
 }

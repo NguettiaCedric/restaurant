@@ -87,7 +87,7 @@ class ReservationController extends Controller
 
         // dd($request->toArray());
 
-        Reservation::create([
+           Reservation::create([
             'first_name'  => $request->first_name,
             'last_name'  => $request->last_name,
             'email'  => $request->email,
@@ -142,20 +142,6 @@ class ReservationController extends Controller
     public function update(Request $request, Reservation $reservation)
     {
         //
-
-        $table = Table::findOrFail($request->table_id);
-        if ($request->guest_number > $table->guest_number) {
-            return back()->with('warning', 'warning', 'Choisissez une autre table SVP');
-        }
-
-        $request_date = Carbon::parse($request->res_date);
-        $reservations = $table->reservations()->where('id', '!=', $reservation->id)->get();
-        foreach ($reservations as $res) {
-            if ($res->res_date == $request_date) {
-                return back()->with('warning', 'Cette table est reservée pour aujourd\'hui.');
-            }
-        }
-
         $request->validate([
             'last_name' => 'required',
             'tel_number' => 'required',

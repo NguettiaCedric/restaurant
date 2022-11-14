@@ -125,7 +125,7 @@
                             id="status" name="table_id">
 
                             @foreach ($tables as $table)
-                                <option value="{{ $table->id }}" >{{ $table->name }}</option>
+                                <option value="{{ $table->id }}" @selected($table->id == $reservation->table->id) >{{ $table->name }} ({{ $table->guest_number }} clients) </option>
                             @endforeach
 
                         </select>

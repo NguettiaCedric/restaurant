@@ -18,20 +18,29 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-white-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark">
+                            <th scope="col"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark">
+                                #
+                            </th>
+                            <th scope="col"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark">
                                 Nom
                             </th>
-                            <th scope="col" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark">
+                            <th scope="col"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark">
                                 Image
                             </th>
-                            <th scope="col" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark"">
+                            <th scope="col"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark"">
                                 Description
                             </th>
-                            <th scope="col" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark"">
+                            <th scope="col"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark"">
                                 Date
                             </th>
 
-                            <th scope="col" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark"">
+                            <th scope="col"
+                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-dark"">
                                 Actions
                             </th>
 
@@ -44,113 +53,70 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($categories as $category)
-                            <tr
-                                class="bg-white dark:bg-white-800 dark:border-gray-700 hover:bg-gray-500 dark:hover:bg-gray-100">
-                                <th scope="row"
-                                    class="py-4 px-6 font-medium text-gray-500 whitespace-nowrap dark:text-dark">
-                                    {{$category->name}}
-                                </th>
-                                {{-- <td class="py-4 px-6">
+
+                        @if ($categories->count() > 0)
+                            @foreach ($categories as $category)
+                                <tr
+                                    class="bg-white dark:bg-white-800 dark:border-gray-700 hover:bg-gray-500 dark:hover:bg-gray-100">
+
+                                    <th scope="row"
+                                        class="py-4 px-6 font-medium text-gray-500 whitespace-nowrap dark:text-dark">
+                                        {{ $loop->index + 1 }}
+                                    </th>
+
+                                    <th scope="row"
+                                        class="py-4 px-6 font-medium text-gray-500 whitespace-nowrap dark:text-dark">
+                                        {{ $category->name }}
+                                    </th>
+                                    {{-- <td class="py-4 px-6">
                                     {{$category->image}}
                                     <img src="{{ Storage::url('$category->image')}}" alt="" class="w-16 h-16 rounded">
                                 </td> --}}
-                                <td class="py-4 px-6">
-                                    {{$category->image}}
-                                    {{-- <img src="{{ Storage::url('$category->image')}}" alt="" class="w-16 h-16 rounded"> --}}
-                                    <img src="{{$category->getFirstMediaUrl('images', 'thumb')}}"  width="120px" class="w-16 h-16 rounded">
-                                </td>
-                                <td class=" py-4 px-6 font-medium text-gray-500 whitespace-nowrap dark:text-dark">
-                                    {{-- {{$category->description}} --}}
-                                    {{-- {!! Str::substr(strip_tags($category->description),0, 27) !!} --}}
-                                    {!! Str::words(strip_tags($category->description), 3, '...') !!}
-                                </td>
-                                <td class=" py-4 px-6 font-medium text-gray-500 whitespace-nowrap dark:text-dark">
-                                    {{$category->created_at->diffForHumans()}}
-                                </td>
+                                    <td class="py-4 px-6">
+                                        {{-- {{ $category->image }} --}}
+                                        {{-- <img src="{{ Storage::url('$category->image')}}" alt="" class="w-16 h-16 rounded"> --}}
+                                        <img src="{{ $category->getFirstMediaUrl('images', 'thumb') }}" width="120px"
+                                            class="w-16 h-16 rounded">
+                                    </td>
 
-                                <td class="py-4 px-6 text-right">
+                                    <td class=" py-4 px-6 font-medium text-gray-500 whitespace-nowrap dark:text-dark">
+                                        {{-- {{$category->description}} --}}
+                                        {{-- {!! Str::substr(strip_tags($category->description),0, 27) !!} --}}
+                                        {!! Str::words(strip_tags($category->description), 3, '...') !!}
+                                    </td>
+                                    <td class=" py-4 px-6 font-medium text-gray-500 whitespace-nowrap dark:text-dark">
+                                        {{ $category->created_at->diffForHumans() }}
+                                    </td>
 
-                                    <div class="flex space-x-2">
-                                        <a href="{{ route('admin.categories.edit', $category->id)}}"
-                                            class="px-4 py-2 bg-green-500 hover:bg-green-700 rounded-lg text-white">Edit
-                                        </a>
-                                        <form action="{{ route('admin.categories.destroy', $category->id)}}"
-                                            method="POST"
-                                            class="px-4 py-2 bg-red-500 hover:bg-red-700 rounded-lg text-white"
-                                            onsubmit="return confirm('Etre vous sûre ?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">Supprimer</button>
+                                    <td class="py-4 px-6 text-right">
 
-                                       </form>
+                                        <div class="flex space-x-2">
+                                            <a href="{{ route('admin.categories.edit', $category->id) }}"
+                                                class="px-4 py-2 bg-green-500 hover:bg-green-700 rounded-lg text-white">Edit
+                                            </a>
+                                            <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                                                method="POST"
+                                                class="px-4 py-2 bg-red-500 hover:bg-red-700 rounded-lg text-white"
+                                                onsubmit="return confirm('Etre vous sûre ?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">Supprimer</button>
 
-                                    </div>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="4">
+                                    <small class="text-green-500 py-3">
+                                        Pas catégorie enregistré
+                                    </small>
                                 </td>
                             </tr>
-                        @endforeach
-
-
-
-                        {{-- <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row"
-                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="py-4 px-6">
-                                Sliver
-                            </td>
-                            <td class="py-4 px-6">
-                                Laptop
-                            </td>
-                            <td class="py-4 px-6">
-                                $2999
-                            </td>
-                            <td class="py-4 px-6 text-right">
-                                <a href="#"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row"
-                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Microsoft Surface Pro
-                            </th>
-                            <td class="py-4 px-6">
-                                White
-                            </td>
-                            <td class="py-4 px-6">
-                                Laptop PC
-                            </td>
-                            <td class="py-4 px-6">
-                                $1999
-                            </td>
-                            <td class="py-4 px-6 text-right">
-                                <a href="#"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row"
-                                class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Magic Mouse 2
-                            </th>
-                            <td class="py-4 px-6">
-                                Black
-                            </td>
-                            <td class="py-4 px-6">
-                                Accessories
-                            </td>
-                            <td class="py-4 px-6">
-                                $99
-                            </td>
-                            <td class="py-4 px-6 text-right">
-                                <a href="#"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
-                        </tr> --}}
+                        @endif
 
                     </tbody>
                 </table>
